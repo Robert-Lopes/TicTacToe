@@ -1,104 +1,63 @@
+// Inclusão de bibliotecas
 #include <stdio.h>
-#include <cs50.h>
 
-void draw(char simbols[]);
-int solicitation(int positions[], int counter);
-char atribuition(char simbols[],int position, int counter);
-bool winner_verification(char simbols[]);
+// Prótipo das funções
+void atribuition(char *value);
+void draw(char *value);
+void teste(char *value);
 
+// Função principal
 int main(void)
 {
     char simbol[9];
-    for (int i = 0; i < 9; i++)
-    {
-        simbol[i] = ' ';
-    }
+    atribuition(&simbol[0]);
+    draw(&simbol[0]);
 
-    int positions[9];
-    char new_simbol[9];
-    for (int j = 0; j < 9; j++)
-    {
-        int position = solicitation(positions, j);
-        positions[j] = position;
-        simbol[position] = atribuition(simbol,j,positions[j]);
-        new_simbol[position] = simbol[position];
-        draw(simbol);
-
-        if (winner_verification(new_simbol))
-        {
-            printf("%s\n", "We have a winner");
-            printf("%s\n","Congratulations!");
-
-            return 0;
-        }
-    }
-
-    printf("%s\n", "Draw!");
     return 0;
 }
 
+/*
+* Função atribuição:
+* Esta função faz com que o array "simbol" receba um caracter númerico correspondente
+* a sua posição no desenho do jogo.
+* Exemplo: A primeira linha do desenho terá os simbolos 0, 1 e 2 do array "simbol", que
+* correspondem a 1°, 2° e 3° posição do desenho.
+*/
+void atribuition(char *value)
+{
+    char numbers[] = {'0','1','2','3','4','5','6','7','8'};
+    for (int x = 0; x < 9; x++)
+    {
+        *(value+x) = numbers[x];
+    }
+}
 
-void draw(char simbols[])
+
+/*
+* Função draw:
+* O Objetivo dessa função é unicamente imprimir o desenho do jogo, bem como as posições
+* e os simbolos escolhidos pelos usuários.
+*/
+void draw(char *value)
 {
     int counter = 0;
-    for (int i = 0; i < 5; i++)
+    for (int m = 0; m < 5; m++)
     {
-        if ((i % 2) == 0)
+        if (m % 2 == 0)
         {
-            printf("  %c | %c | %c\n ",simbols[counter],simbols[counter+1],simbols[counter+2]);
+            printf(" %c | %c | %c\n", *(value+counter), *(value+(counter+1)), *(value+(counter+2)));
             counter += 3;
+            continue;
         }
-        else
-        {
-            printf("___|___|___\n");
-        }
+        printf("%s\n", "___|___|___");
     }
+    printf("%s\n", "   |   |   ");
 }
 
-int solicitation(int positions[], int counter)
+void teste(char *value)
 {
-    int position;
-    do
+    for (int q = 0; q < 9; q++)
     {
-         position = get_int("What position do you want?: ");
-
-         for (int x = 0; x < counter; x++)
-         {
-            if (positions[x] == position)
-            {
-                printf("This positions has been used. Try another one!\n");
-                position = -1;
-            }
-         }
+        printf("%c\n",*(value+q));
     }
-    while (position < 0 || position > 9);
-
-    return position;
-}
-
-char atribuition(char simbols[], int counter,int position)
-{
-
-    if ((counter % 2 ) == 0)
-    {
-        return 'X';
-    }
-    else
-    {
-        return 'O';
-    }
-}
-
-bool winner_verification(char simbols[])
-{
-    bool line = ((simbols[0] == simbols[1]) && (simbols[1] == simbols[2])) || ((simbols[3] == simbols[4]) && (simbols[4] == simbols[5])) || ((simbols[6] == simbols[7]) && (simbols[7] == simbols[8]));
-    bool colune = ((simbols[0] == simbols[3]) && (simbols[3] == simbols[6])) || ((simbols[1] == simbols[4]) && (simbols[4] == simbols[7])) || ((simbols[2] == simbols[5]) && (simbols[5] == simbols[8]));
-    bool diagonal = ((simbols[0] == simbols[4]) && (simbols[4] == simbols[8])) || ((simbols[2] == simbols[4]) && (simbols[4] == simbols[6]));
-
-    if ((line) || (colune) || (diagonal))
-    {
-        return true;
-    }
-
-    return false;
 }
